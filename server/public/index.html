@@ -18,9 +18,27 @@
       <h1>SQL TO-DO List</h1>
     </header>
     <section>
+      <form>
+        <input id="task-text" data-testid="toDoTextInput" type="text" placeholder="Task Text" required >
+        <!-- <button id="add-task" data-testid="submitButton" onclick="addTask()" >Add Task</button> -->
+      </form>
       <!-- ADD FORM TO ENTER NEW TODO -->
     </section>
-    <section>
+    <section id="to-do">
+      <table id="to-do-table" class="table table-striped">
+        <thead class="table-group-divider">
+          <tr>
+            <th>Done?</th>
+            <th>#</th>
+            <th>To-Do Task</th>
+            <th>Edit Task</th>
+            <th>Mark Complete</th>
+            <th>Delete Task</th>
+          </tr>
+        </thead>
+        <tbody id="to-do-list">
+        </tbody>
+      </table>
       <!-- ADD SECTION FOR THE RENDERING OF THE TODO LIST -->
     </section>
     <footer>
