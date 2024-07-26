@@ -42,11 +42,11 @@ function renderTasks(tasks) {
         tasksTable.innerHTML += `
             <tr data-testid="toDoItem">
                 <td>${completeStatus}</td>
+                <td>${taskItem.id}</td>
                 <td>${taskItem.text}</td>
                 <td><button>Edit Task</button></td>
                 <td><button data-testid="completeButton">Complete?</button></td>
                 <td><button data-testid="deleteButton">Delete</button></td>
-                <td><button>👆</button><button>👇</button></td>
             </tr>
     `;
     };

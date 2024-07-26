@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const pool = require('../modules/pool');
+const pool = require('../modules/pool.js');
 
 // GET route
 router.get('/', (req, res) => {
     let queryText = `
             SELECT * FROM "todos"
-                ORDER BY "priority";
+                ORDER BY "id";
     `;
     
     pool.query(queryText).then(result => {
