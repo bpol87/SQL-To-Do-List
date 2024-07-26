@@ -40,6 +40,28 @@ router.post(`/`, (req, res) => {
 });
 
 // PUT route
+router.put('/:id', (req, res) => {
+  console.log(`PUT /todos/:id received a request!`);
+
+  const taskIdToUpdate = req.params.id;
+  
+  let sqlText = `
+    UPDATE "todos"
+      SET "isComplete" = 'true'
+      WHERE "id" = $1;
+  `
+
+  const sqlValues = [taskIdToUpdate];
+
+  pool.query(sqlText, sqlValues)
+    .then((dbResult) => {
+      res.sendStatus(200);
+    })
+    .catch((dbError) => {
+      console.log('SQL query error in PUT /todos/:id', dbError);
+      res.sendStatus(500);
+    })
+});
 
 //  DELETE route
 

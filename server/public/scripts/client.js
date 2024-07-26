@@ -38,6 +38,20 @@ axios({
 };
 
 // PUT route
+function statusChange(taskId) {
+    axios({
+      method: "PUT",
+      url: `/todos/${taskId}`,
+      data: { transfer: 'true' }
+  
+    })
+      .then((response) => {
+        getTasks();
+      })
+      .catch((error) => {
+        console.log("transferChange() error:", error);
+      });
+  };
 
 // DELETE route
 
@@ -58,15 +72,22 @@ function renderTasks(tasks) {
         }
 
         tasksTable.innerHTML += `
-            <tr data-testid="toDoItem">
+            <tr data-testid="toDoItem" id="to-do-item-${taskItem.id}">
                 <td>${completeStatus}</td>
                 <td>${taskItem.id}</td>
                 <td contenteditable="true">${taskItem.text}</td>
                 <td><button>Edit Task</button></td>
-                <td><button data-testid="completeButton">Complete?</button></td>
+                <td><button id="complete-btn-${taskItem.id}" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
                 <td><button data-testid="deleteButton">Delete</button></td>
             </tr>
     `;
+
+    if (taskItem.isComplete) {
+        let completeBtn = document.getElementById(`complete-btn-${taskItem.id}`);
+        let toDoItem = document.getElementById(`to-do-item-${taskItem.id}`);
+        completeBtn.style.display = "none";
+        toDoItem.classList.add('completed');
+    }
     };
 };
 
