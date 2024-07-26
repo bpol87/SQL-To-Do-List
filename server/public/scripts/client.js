@@ -54,6 +54,19 @@ function statusChange(taskId) {
   };
 
 // DELETE route
+function deleteTask(taskId) {
+    axios({
+        method: `DELETE`,
+        url: `/todos/${taskId}`,
+      })
+        .then(
+          (response) => {
+          getTasks()
+})
+        .catch((error) => {
+          console.log("Error in Delete koalas response: ", error);
+        });
+};
 
 // HELPER functions
 
@@ -78,7 +91,7 @@ function renderTasks(tasks) {
                 <td contenteditable="true">${taskItem.text}</td>
                 <td><button>Edit Task</button></td>
                 <td><button id="complete-btn-${taskItem.id}" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
-                <td><button data-testid="deleteButton">Delete</button></td>
+                <td><button data-testid="deleteButton" onclick="deleteTask(${taskItem.id})">Delete</button></td>
             </tr>
     `;
 
