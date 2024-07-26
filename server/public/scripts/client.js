@@ -17,6 +17,25 @@ function getTasks() {
 };
 
 // POST route
+function addTask() {
+const taskText = document.getElementById('task-text').value;
+
+let taskToSubmit = {
+    text: taskText
+}
+
+axios({
+    method: `POST`,
+    url: `/todos`,
+    data: taskToSubmit
+}) 
+.then((response) => {
+    getTasks();
+}) 
+.catch((error) => {
+    console.log(`Error in POST /todos response:`, error)
+})
+};
 
 // PUT route
 
@@ -24,7 +43,6 @@ function getTasks() {
 
 // HELPER functions
 
-// EXTRA FEATURES functions
 
 function renderTasks(tasks) {
     const tasksTable = document.getElementById('to-do-list');
@@ -43,7 +61,7 @@ function renderTasks(tasks) {
             <tr data-testid="toDoItem">
                 <td>${completeStatus}</td>
                 <td>${taskItem.id}</td>
-                <td>${taskItem.text}</td>
+                <td contenteditable="true">${taskItem.text}</td>
                 <td><button>Edit Task</button></td>
                 <td><button data-testid="completeButton">Complete?</button></td>
                 <td><button data-testid="deleteButton">Delete</button></td>
@@ -52,6 +70,7 @@ function renderTasks(tasks) {
     };
 };
 
+// EXTRA FEATURES functions
 
 // FUNCTION CALLS
 getTasks();
