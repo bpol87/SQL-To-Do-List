@@ -37,7 +37,8 @@ router.post(`/`, (req, res) => {
             console.log(`SQL Query error in todos/POST: `, dbErr)
             res.sendStatus(500)
         })
-})
+});
+
 // PUT route
 
 //  DELETE route
