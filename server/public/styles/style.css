@@ -1,0 +1,99 @@
+/* SECTION  STYLING */
+
+body {
+    background-color: lightgray; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#to-do-app {
+    background-color: mintcream;
+    width: 80%;
+}
+
+/* TEXT STYLING  */
+#list-title {
+    margin-left: 24px;
+}
+
+/* HEADER STYLING */
+header {
+    background-color: darkolivegreen;
+    color: white;
+}
+
+/* FORM STYLING  */
+#add-task {
+    margin-left: 10px;
+}
+
+/* TABLE STYLING */ 
+#to-do {
+    margin-bottom: 50px;
+}
+
+th:nth-child(1) {
+    text-align: center;
+}
+
+td:nth-child(1) {
+    text-align: center;
+}
+
+th:nth-child(4) {
+    text-align: center;
+}
+
+td:nth-child(4) {
+    text-align: center;
+}
+
+th:nth-child(5) {
+    text-align: center;
+}
+
+td:nth-child(5) {
+    text-align: center;
+}
+
+th:last-child {
+    text-align: right;
+    padding-right: 25px;
+
+}
+
+td:last-child {
+    text-align: right;
+    padding-right: 25px;
+}
+
+/* FOOTER STYLING */
+footer {
+ background-color: darkolivegreen;
+ color: white;
+}
+
+#socials {
+    vertical-align: middle;
+    padding-bottom: 10px;
+}
+
+/* ALERT STYLING */
+
+#success {
+    border: 1px solid darkgreen;
+    background-color: rgb(202, 243, 202);
+    color: darkgreen;
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#alert-text {
+    line-height: 15px;
+    padding: 24px 0px 10px 15px;
+}
