@@ -46,7 +46,7 @@ router.put('/:id', (req, res) => {
 
   let sqlText = `
     UPDATE "todos"
-      SET "isComplete" = 'true'
+      SET "completedAt" = CURRENT_TIMESTAMP, "isComplete" = 'true'
       WHERE "id" = $1;
   `
 

@@ -4,6 +4,7 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 
 // Global Variables
 let valid = true;
+let taskForm = document.getElementById('task-form');
 
 // GET route
 function getTasks() {
@@ -24,59 +25,69 @@ function getTasks() {
 // POST route
 function addTask(event) {
     event.preventDefault();
-const taskText = document.getElementById('task-text').value;
-console.log(taskText.length)
+    const taskText = document.getElementById('task-text').value;
+    valid = true;
     if (!isValid(taskText)) {
-        let errorValidation = document.getElementById('')
+        let errorInput = document.getElementById('task-text');
+        errorInput.classList.add('error-validation');
+        let errorValidation = document.getElementById('error');
+        errorValidation.innerHTML = `<p id="error-text">Please fill out the required fields.</p>`
         return;
+    } else {
+        let errorInput = document.getElementById('task-text');
+        errorInput.classList.remove('error-validation');
+        let errorValidation = document.getElementById('error');
+        errorValidation.innerHTML = '';
     }
-    
-console.log('went past the return')
-let taskToSubmit = {
-    text: taskText
-}
 
-axios({
-    method: `POST`,
-    url: `/todos`,
-    data: taskToSubmit
-}) 
-.then((response) => {
-    getTasks();
-}) 
-.catch((error) => {
-    console.log(`Error in POST /todos response:`, error)
-})
+    console.log('went past the return')
+    let taskToSubmit = {
+        text: taskText
+    }
+
+    axios({
+        method: `POST`,
+        url: `/todos`,
+        data: taskToSubmit
+    })
+        .then((response) => {
+            taskForm.reset();
+            getTasks();
+
+        })
+        .catch((error) => {
+            console.log(`Error in POST /todos response:`, error)
+        })
 };
 
 // PUT route
 function statusChange(taskId) {
     axios({
-      method: "PUT",
-      url: `/todos/${taskId}`,
-      data: { transfer: 'true' }
-  
+        method: "PUT",
+        url: `/todos/${taskId}`,
+        data: { transfer: 'true' }
+
     })
-      .then((response) => {
-        getTasks();
-      })
-      .catch((error) => {
-        console.log("transferChange() error:", error);
-      });
-  };
+        .then((response) => {
+            getTasks();
+        })
+        .catch((error) => {
+            console.log("statusChange() error:", error);
+        });
+};
 
 // DELETE route
 function deleteTask(taskId) {
     axios({
         method: `DELETE`,
         url: `/todos/${taskId}`,
-      })
+    })
         .then(
-          (response) => {
-          getTasks()
-})
+            (response) => {
+                getTasks()
+            })
         .catch((error) => {
-          console.log("Error in Delete koalas response: ", error);
+            console.log("Error in DELETE /todos: ", error);
         });
 };
 
@@ -93,8 +104,9 @@ function renderTasks(tasks) {
         } else {
             completeStatus = `<i class="bi-x-circle-fill" style="font-size: 1.5rem; color: red;"></i>`
         }
-
-        tasksTable.innerHTML += `
+        console.log(taskItem.completedAt);
+        if (taskItem.completedAt === null) {
+            tasksTable.innerHTML += `
             <tr data-testid="toDoItem" id="to-do-item-${taskItem.id}">
                 <td>${completeStatus}</td>
                 <td>${taskItem.id}</td>
@@ -103,14 +115,25 @@ function renderTasks(tasks) {
                 <td><button id="complete-btn-${taskItem.id}"  class="btn btn-success btn-sm" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
                 <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
             </tr>
-    `;
+            `
+        } else {
+            tasksTable.innerHTML += `
+            <tr data-testid="toDoItem" id="to-do-item-${taskItem.id}">
+                <td>${completeStatus}</td>
+                <td>${taskItem.id}</td>
+                <td contenteditable="true" id="to-do-text-${taskItem.id}">${taskItem.text}</td>
+                <td><button class="btn btn-secondary btn-sm" onclick="updateTask(${taskItem.id})">Edit</button></td>
+                <td>${taskItem.completedAt}</td>
+                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
+            </tr>
+            `
+        }
+        ;
 
-    if (taskItem.isComplete) {
-        let completeBtn = document.getElementById(`complete-btn-${taskItem.id}`);
-        let toDoItem = document.getElementById(`to-do-item-${taskItem.id}`);
-        completeBtn.style.display = "none";
-        toDoItem.classList.add('completed');
-    }
+        if (taskItem.isComplete){
+            let toDoItem = document.getElementById(`to-do-item-${taskItem.id}`);
+            toDoItem.classList.add('completed');
+        }
     };
 };
 
@@ -127,13 +150,13 @@ function editAlert(status, id) {
     alertMsg.style.diplay = "block";
     alertMsg.classList.add('p-2');
     if (status === 'success') {
-    alertMsg.innerHTML = `<div id="success"><p id="alert-text"><i class="bi-check-circle-fill"></i> Task ${id} was updated successfully!</p><button class="btn btn-sm" onclick="removeAlert()"><i class="bi-x-lg"></i></button></div>`
-    console.log('Alert Message is:', status)
+        alertMsg.innerHTML = `<div id="success"><p id="alert-text"><i class="bi-check-circle-fill"></i> Task ${id} was updated successfully!</p><button class="btn btn-sm" onclick="removeAlert()"><i class="bi-x-lg"></i></button></div>`
+        console.log('Alert Message is:', status)
     } else if (status === 'error') {
         console.log('Error displaying', status)
         alertMsg.innerHTML = `<div id="error"><p id="alert-text"><i class="bi-check-circle-fill"></i> Task ${id} was updated successfully!</p><button class="btn btn-sm" onclick="removeAlert()"><i class="bi-x-lg"></i></button></div>`
-    }       
-    
+    }
+
 }
 
 function removeAlert() {
@@ -144,21 +167,21 @@ function removeAlert() {
 
 function updateTask(taskId) {
     let newTaskText = document.getElementById(`to-do-text-${taskId}`).innerText
-    
+
     let updateObj = {
-      newTaskText: newTaskText,
+        newTaskText: newTaskText,
     }
 
     console.log(`Task update info to PATCH:`, updateObj)
-    
+
     axios({
-      method: `PATCH`,
-      url: `/todos/${taskId}`,
-      data: updateObj
+        method: `PATCH`,
+        url: `/todos/${taskId}`,
+        data: updateObj
     }).then((response) => {
-      getTasks();
-      editAlert('success', `${taskId}`);
-    }) .catch((error) => {
+        getTasks();
+        editAlert('success', `${taskId}`);
+    }).catch((error) => {
         console.log('Something went wrong with the Patch');
         editAlert('error')
     })
