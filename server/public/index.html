@@ -31,13 +31,15 @@
             <div class="modal-body"></div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Return to List</button>
-              <button type="button" class="btn btn-primary" id="delete-btn" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Yes Delete!</button>
+              <button type="button" class="btn btn-primary" id="delete-btn" data-bs-target="#exampleModalToggle2"
+                data-bs-toggle="modal">Yes Delete!</button>
             </div>
           </div>
         </div>
       </div>
       <!-- MODAL 2 -->
-      <div class="modal fade" id="exampleModalToggle2" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
+      <div class="modal fade" id="exampleModalToggle2" tabindex="-1" aria-labelledby="exampleModal2Label"
+        aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -60,7 +62,7 @@
       <h4>Add A New Task:</h4>
       <form id="task-form">
         <input id="task-text" data-testid="toDoTextInput" type="text" placeholder="Task Text" required>
-        <button id="add-task" class="btn btn-secondary btn-sm" data-testid="submitButton" onclick="addTask(event)">Add
+        <button id="add-task" class="btn btn-success btn-sm" data-testid="submitButton" onclick="addTask(event)">Add
           Task</button>
       </form>
       <div id="error"></div>
@@ -74,14 +76,15 @@
             <th>Done?</th>
             <th>#</th>
             <th>To-Do Task</th>
-            <th>Edit Task <a href="#" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="Click task text to edit then click Edit button to save changes"><i class="bi-info-circle"></i></a></th>
+            <th>Edit Task <a href="#" data-bs-toggle="popover" data-bs-trigger="focus"
+                data-bs-content="Click task text to edit then click Edit button to save changes"><i
+                  class="bi-info-circle"></i></a></th>
             <th>Completed</th>
             <th>Delete Task</th>
           </tr>
         </thead>
         <tbody id="to-do-list" class="table-group-divider">
         </tbody>
-        <caption class="p-2">* Click task text to edit then click "Edit" button to save changes.</caption>
       </table>
     </section>
     <footer class="p-4">
@@ -93,10 +96,12 @@
       </div>
       <div id="socials">
         <p>Connect with me on my socials:
-          <a href="https://www.linkedin.com/in/benpollack87" target="_blank" rel="noreferrer" class="link-light link-offset-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="LinkedIn Profile"><i class="bi-linkedin" style="font-size: 2rem;"></i></a>
-          <a href="https://github.com/bpol87" target="_blank" rel="noreferrer" class="link-light link-offset-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-title="Github Profile"><i class="bi-github" style="font-size: 2rem;"></i></a>
+          <a href="https://www.linkedin.com/in/benpollack87" target="_blank" rel="noreferrer"
+            class="link-light link-offset-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-title="LinkedIn Profile"><i class="bi-linkedin" style="font-size: 2rem;"></i></a> &nbsp;
+          <a href="https://github.com/bpol87" target="_blank" rel="noreferrer" class="link-light link-offset-2"
+            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Github Profile"><i class="bi-github"
+              style="font-size: 2rem;"></i></a>
         </p>
       </div>
     </footer>

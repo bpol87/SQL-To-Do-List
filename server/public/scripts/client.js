@@ -69,14 +69,14 @@ function addTask(event) {
 function statusChange(taskId) {
     let timestamp = Date.now();
     console.log(timestamp);
-    let convertedTimestamp = new Date(timestamp) ;
+    let convertedTimestamp = new Date(timestamp);
     console.log(convertedTimestamp);
     let taskToUpdate = {
         isComplete: 'true',
         completedAt: convertedTimestamp,
 
     }
-    
+
     axios({
         method: "PUT",
         url: `/todos/${taskId}`,
@@ -149,7 +149,7 @@ function renderTasks(tasks) {
         }
         ;
 
-        if (taskItem.isComplete){
+        if (taskItem.isComplete) {
             let toDoItem = document.getElementById(`to-do-item-${taskItem.id}`);
             toDoItem.classList.add('completed');
         }
@@ -208,29 +208,29 @@ function updateTask(taskId) {
 
 const exampleModal = document.getElementById('exampleModal')
 if (exampleModal) {
-  exampleModal.addEventListener('show.bs.modal', event => {
-    // Button that triggered the modal
-    const button = event.relatedTarget
-    // Extract info from data-bs-* attributes
-    const taskNum = button.getAttribute('data-bs-whatever')
-    // If necessary, you could initiate an Ajax request here
-    // and then do the updating in a callback.
+    exampleModal.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        const taskNum = button.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an Ajax request here
+        // and then do the updating in a callback.
 
-    // Update the modal's content.
-    const modalTitle = exampleModal.querySelector('.modal-title')
-    const modalTask = exampleModal.querySelector('.modal-body')
+        // Update the modal's content.
+        const modalTitle = exampleModal.querySelector('.modal-title')
+        const modalTask = exampleModal.querySelector('.modal-body')
 
-    modalTitle.textContent = `Delete Task ${taskNum} from To-Do List`
-    modalTask.textContent = `Are you sure you want to delete task ${taskNum} from the database?`
+        modalTitle.textContent = `Delete Task ${taskNum} from To-Do List`
+        modalTask.textContent = `Are you sure you want to delete task ${taskNum} from the database?`
 
-    const deleteButton = exampleModal.querySelector('#delete-btn');
-    
-    deleteButton.addEventListener('click',() => {
-        console.log('TaskNum is:', taskNum);
-        deleteTask(taskNum);
+        const deleteButton = exampleModal.querySelector('#delete-btn');
+
+        deleteButton.addEventListener('click', () => {
+            console.log('TaskNum is:', taskNum);
+            deleteTask(taskNum);
+        })
+
     })
-
-})
 }
 // FUNCTION CALLS
 getTasks();

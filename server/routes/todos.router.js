@@ -43,7 +43,7 @@ router.post(`/`, (req, res) => {
 router.put('/:id', (req, res) => {
 
   const taskIdToUpdate = req.params.id;
-  
+
   let sqlText = `
     UPDATE "todos"
       SET "isComplete" = $1, "completedAt" = $2
@@ -51,7 +51,7 @@ router.put('/:id', (req, res) => {
   `
 
   const sqlValues = [req.body.isComplete, req.body.completedAt, taskIdToUpdate];
-console.log(sqlValues);
+  console.log(sqlValues);
   pool.query(sqlText, sqlValues)
     .then((dbResult) => {
       res.sendStatus(200);
@@ -82,19 +82,19 @@ router.delete('/:id', (req, res) => {
 });
 
 // PATCH route
-router.patch(`/:id`, (req, res) =>{
+router.patch(`/:id`, (req, res) => {
   const sqlText = `
   UPDATE "todos"
     SET "text" = $1 WHERE "id" = $2;`
 
   const sqlValues = [req.body.newTaskText, req.params.id]
   pool.query(sqlText, sqlValues)
-  .then((response) =>{
+    .then((response) => {
       res.sendStatus(200)
-  }).catch((dbErr) =>{
+    }).catch((dbErr) => {
       console.log(`SQL Query error in koalas/PATCH: `, dbErr)
       res.sendStatus(500)
-  })
+    })
 })
 
 module.exports = router;
