@@ -62,10 +62,20 @@ function addTask(event) {
 
 // PUT route
 function statusChange(taskId) {
+    let timestamp = Date.now();
+    console.log(timestamp);
+    let convertedTimestamp = new Date(timestamp) ;
+    console.log(convertedTimestamp);
+    let taskToUpdate = {
+        isComplete: 'true',
+        completedAt: convertedTimestamp,
+
+    }
+    
     axios({
         method: "PUT",
         url: `/todos/${taskId}`,
-        data: { transfer: 'true' }
+        data: taskToUpdate
 
     })
         .then((response) => {
@@ -104,6 +114,9 @@ function renderTasks(tasks) {
         } else {
             completeStatus = `<i class="bi-x-circle-fill" style="font-size: 1.5rem; color: red;"></i>`
         }
+        let convertedString = new Date(taskItem.completedAt);
+        let dateString = convertedString.toDateString();
+        let timeString = convertedString.toTimeString();
         console.log(taskItem.completedAt);
         if (taskItem.completedAt === null) {
             tasksTable.innerHTML += `
@@ -123,7 +136,8 @@ function renderTasks(tasks) {
                 <td>${taskItem.id}</td>
                 <td contenteditable="true" id="to-do-text-${taskItem.id}">${taskItem.text}</td>
                 <td><button class="btn btn-secondary btn-sm" onclick="updateTask(${taskItem.id})">Edit</button></td>
-                <td>${taskItem.completedAt}</td>
+                <td>${dateString} <br />
+                ${timeString}</td>
                 <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
             </tr>
             `
@@ -185,6 +199,10 @@ function updateTask(taskId) {
         console.log('Something went wrong with the Patch');
         editAlert('error')
     })
+}
+
+function getTimestamp (taskId) {
+
 }
 // FUNCTION CALLS
 getTasks();

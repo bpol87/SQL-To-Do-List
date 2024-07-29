@@ -43,15 +43,15 @@ router.post(`/`, (req, res) => {
 router.put('/:id', (req, res) => {
 
   const taskIdToUpdate = req.params.id;
-
+  
   let sqlText = `
     UPDATE "todos"
-      SET "completedAt" = CURRENT_TIMESTAMP, "isComplete" = 'true'
-      WHERE "id" = $1;
+      SET "isComplete" = $1, "completedAt" = $2
+      WHERE "id" = $3;
   `
 
-  const sqlValues = [taskIdToUpdate];
-
+  const sqlValues = [req.body.isComplete, req.body.completedAt, taskIdToUpdate];
+console.log(sqlValues);
   pool.query(sqlText, sqlValues)
     .then((dbResult) => {
       res.sendStatus(200);
