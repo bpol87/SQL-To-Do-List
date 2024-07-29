@@ -81,4 +81,20 @@ router.delete('/:id', (req, res) => {
 
 });
 
+// PATCH route
+router.patch(`/:id`, (req, res) =>{
+  const sqlText = `
+  UPDATE "todos"
+    SET "text" = $1 WHERE "id" = $2;`
+
+  const sqlValues = [req.body.newTaskText, req.params.id]
+  pool.query(sqlText, sqlValues)
+  .then((response) =>{
+      res.sendStatus(200)
+  }).catch((dbErr) =>{
+      console.log(`SQL Query error in koalas/PATCH: `, dbErr)
+      res.sendStatus(500)
+  })
+})
+
 module.exports = router;

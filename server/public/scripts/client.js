@@ -1,4 +1,9 @@
 console.log('JS is sourced!');
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+// Global Variables
+let valid = true;
 
 // GET route
 function getTasks() {
@@ -17,9 +22,16 @@ function getTasks() {
 };
 
 // POST route
-function addTask() {
+function addTask(event) {
+    event.preventDefault();
 const taskText = document.getElementById('task-text').value;
-
+console.log(taskText.length)
+    if (!isValid(taskText)) {
+        let errorValidation = document.getElementById('')
+        return;
+    }
+    
+console.log('went past the return')
 let taskToSubmit = {
     text: taskText
 }
@@ -69,8 +81,6 @@ function deleteTask(taskId) {
 };
 
 // HELPER functions
-
-
 function renderTasks(tasks) {
     const tasksTable = document.getElementById('to-do-list');
 
@@ -79,19 +89,19 @@ function renderTasks(tasks) {
     for (let taskItem of tasks) {
         let completeStatus;
         if (taskItem.isComplete) {
-            completeStatus = '✅'
+            completeStatus = `<i class="bi-check-circle-fill" style="font-size: 1.5rem; color: green;"></i>`
         } else {
-            completeStatus = '❌'
+            completeStatus = `<i class="bi-x-circle-fill" style="font-size: 1.5rem; color: red;"></i>`
         }
 
         tasksTable.innerHTML += `
             <tr data-testid="toDoItem" id="to-do-item-${taskItem.id}">
                 <td>${completeStatus}</td>
                 <td>${taskItem.id}</td>
-                <td contenteditable="true">${taskItem.text}</td>
-                <td><button>Edit Task</button></td>
-                <td><button id="complete-btn-${taskItem.id}" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
-                <td><button data-testid="deleteButton" onclick="deleteTask(${taskItem.id})">Delete</button></td>
+                <td contenteditable="true" id="to-do-text-${taskItem.id}">${taskItem.text}</td>
+                <td><button class="btn btn-secondary btn-sm" onclick="updateTask(${taskItem.id})">Edit</button></td>
+                <td><button id="complete-btn-${taskItem.id}"  class="btn btn-success btn-sm" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
+                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
             </tr>
     `;
 
@@ -104,7 +114,54 @@ function renderTasks(tasks) {
     };
 };
 
-// EXTRA FEATURES functions
+function isValid(text) {
+    if (text.length === 0) {
+        valid = false;
+    }
+    return valid;
+};
 
+// EXTRA FEATURES functions
+function editAlert(status, id) {
+    let alertMsg = document.getElementById('alert');
+    alertMsg.style.diplay = "block";
+    alertMsg.classList.add('p-2');
+    if (status === 'success') {
+    alertMsg.innerHTML = `<div id="success"><p id="alert-text"><i class="bi-check-circle-fill"></i> Task ${id} was updated successfully!</p><button class="btn btn-sm" onclick="removeAlert()"><i class="bi-x-lg"></i></button></div>`
+    console.log('Alert Message is:', status)
+    } else if (status === 'error') {
+        console.log('Error displaying', status)
+        alertMsg.innerHTML = `<div id="error"><p id="alert-text"><i class="bi-check-circle-fill"></i> Task ${id} was updated successfully!</p><button class="btn btn-sm" onclick="removeAlert()"><i class="bi-x-lg"></i></button></div>`
+    }       
+    
+}
+
+function removeAlert() {
+    let alertMsg = document.getElementById('alert');
+    alertMsg.innerHTML = '';
+}
+
+
+function updateTask(taskId) {
+    let newTaskText = document.getElementById(`to-do-text-${taskId}`).innerText
+    
+    let updateObj = {
+      newTaskText: newTaskText,
+    }
+
+    console.log(`Task update info to PATCH:`, updateObj)
+    
+    axios({
+      method: `PATCH`,
+      url: `/todos/${taskId}`,
+      data: updateObj
+    }).then((response) => {
+      getTasks();
+      editAlert('success', `${taskId}`);
+    }) .catch((error) => {
+        console.log('Something went wrong with the Patch');
+        editAlert('error')
+    })
+}
 // FUNCTION CALLS
 getTasks();
