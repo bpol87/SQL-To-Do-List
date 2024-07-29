@@ -126,7 +126,7 @@ function renderTasks(tasks) {
                 <td contenteditable="true" id="to-do-text-${taskItem.id}">${taskItem.text}</td>
                 <td><button class="btn btn-secondary btn-sm" onclick="updateTask(${taskItem.id})">Edit</button></td>
                 <td><button id="complete-btn-${taskItem.id}"  class="btn btn-success btn-sm" data-testid="completeButton" onclick="statusChange(${taskItem.id})">Complete?</button></td>
-                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
+                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${taskItem.id}">Delete</button></td>
             </tr>
             `
         } else {
@@ -138,7 +138,7 @@ function renderTasks(tasks) {
                 <td><button class="btn btn-secondary btn-sm" onclick="updateTask(${taskItem.id})">Edit</button></td>
                 <td>${dateString} <br />
                 ${timeString}</td>
-                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" onclick="deleteTask(${taskItem.id})">Delete</button></td>
+                <td><button data-testid="deleteButton" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${taskItem.id}">Delete</button></td>
             </tr>
             `
         }
@@ -201,8 +201,31 @@ function updateTask(taskId) {
     })
 }
 
-function getTimestamp (taskId) {
+const exampleModal = document.getElementById('exampleModal')
+if (exampleModal) {
+  exampleModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    const taskNum = button.getAttribute('data-bs-whatever')
+    // If necessary, you could initiate an Ajax request here
+    // and then do the updating in a callback.
 
+    // Update the modal's content.
+    const modalTitle = exampleModal.querySelector('.modal-title')
+    const modalTask = exampleModal.querySelector('.modal-body')
+
+    modalTitle.textContent = `Delete Task ${taskNum} from To-Do List`
+    modalTask.textContent = `Are you sure you want to delete task ${taskNum} from the database?`
+
+    const deleteButton = exampleModal.querySelector('#delete-btn');
+    
+    deleteButton.addEventListener('click',() => {
+        console.log('TaskNum is:', taskNum);
+        deleteTask(taskNum);
+    })
+
+})
 }
 // FUNCTION CALLS
 getTasks();
